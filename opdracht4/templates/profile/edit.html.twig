@@ -1,0 +1,9 @@
+{# templates/profile/edit.html.twig #}
+
+<h1>Edit Profile</h1>
+
+{{ form_start(form) }}
+    {{ form_row(form.username) }}
+    {{ form_row(form.email) }}
+<button type="submit">Save changes</button>
+{{ form_end(form) }}

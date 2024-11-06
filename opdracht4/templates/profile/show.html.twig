@@ -1,0 +1,8 @@
+{# templates/profile/show.html.twig #}
+
+<h1>Profile</h1>
+
+<p><strong>Username:</strong> {{ user.username ?? null }}</p>
+<p><strong>Email:</strong> {{ user.email ?? null  }}</p>
+
+<a href="{{ path('app_profile_edit') }}">Edit Profile</a>

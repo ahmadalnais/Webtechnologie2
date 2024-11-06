@@ -1,0 +1,42 @@
+security:
+    # Main firewall
+    firewalls:
+        main:
+            # Allow unauthenticated access to the login page
+            pattern: ^/(?!login$).* # This regex excludes /login from the login protection
+            form_login:
+                login_path: app_login        # The route for the login page
+                check_path: app_login        # The route for handling the form submission
+                username_parameter: _username
+                password_parameter: _password
+
+            # Enable logout functionality
+            logout:
+                path: app_logout             # The route for logging out
+                target: app_login            # Redirect to the login page after logging out
+
+            # Optional: Enable remember me functionality
+            remember_me:
+                secret: '%kernel.secret%'
+                lifetime: 604800 # 1 week in seconds
+                path: /
+
+    # User provider: where Symfony will fetch user data (from a database or other sources)
+    providers:
+        app_user_provider:
+            entity:
+                class: App\Entity\Users  # The entity class representing the user
+                property: email           # The property to use for authentication (e.g., email)
+
+    # Access control to protect your routes
+    access_control:
+        # Allow access to the login route without being logged in
+        - { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        # Ensure only authenticated users can access /profile
+        - { path: ^/profile, roles: ROLE_USER }
+        # Example: Only admins can access /admin
+        - { path: ^/admin, roles: ROLE_ADMIN }
+    password_hashers:
+        App\Entity\Users:
+            algorithm: auto  # This will automatically select a secure algorithm (bcrypt or argon2i)
+            cost: 12         # Optional: defines the cost factor (only for bcrypt)

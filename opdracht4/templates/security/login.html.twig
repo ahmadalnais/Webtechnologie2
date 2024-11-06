@@ -1,0 +1,35 @@
+{# templates/security/login.html.twig #}
+
+<h1>Login</h1>
+
+<form action="{{ path('app_login') }}" method="post">
+    <div>
+        <label for="username">Email</label>
+        <input type="text" id="username" name="_username" value="{{ app.request.get('_username') }}" required autofocus />
+    </div>
+    <div>
+        <label for="password">Password</label>
+        <input type="password" id="password" name="_password" required />
+    </div>
+
+    <button type="submit">Log in</button>
+</form>
+
+{# Check if there is an authentication error and display it #}
+{% if app.session.flashBag.has('authentication_error') %}
+    <div class="error">
+        {% for message in app.session.flashBag.get('authentication_error') %}
+            <p>{{ message }}</p>
+        {% endfor %}
+    </div>
+{% endif %}
+
+{# Optionally, display the "remember me" checkbox if enabled #}
+{% if app.session.get('remember_me') %}
+    <div class="remember-me">
+        <label>
+            <input type="checkbox" name="_remember_me" />
+            Remember me
+        </label>
+    </div>
+{% endif %}
